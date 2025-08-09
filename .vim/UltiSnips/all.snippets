@@ -1,0 +1,164 @@
+# This file contains snippets that are always defined.
+
+# sligthly lower priority than everything else since specialized versions
+# should overwrite. The user needs to adjust her priority in her snippets to
+# ~-55 so that other filetypes will still overwrite.
+priority -60
+
+global !p
+
+LOREM = """
+Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod \
+tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At \
+vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, \
+no sea takimata sanctus est Lorem ipsum dolor sit amet.
+"""
+def _parse_comments(s):
+	""" Parses vim's comments option to extract comment format """
+	
+	i = iter(s.split(","))
+	rv = []
+
+	try:
+		while True:
+			# get the flags and text of a comment part
+			flags, text = next(i).split(':', 1)
+
+			if len(flags) == 0:
+				rv.append(('OTHER', text, text, text, ''))
+			# parse 3-part comment, but ignore those with O flag
+			elif 's' in flags and 'O' not in flags:
+				ctriple = ['TRIPLE']
+				indent = ''
+
+				if flags[-1] in string.digits:
+					indent = " " * int(flags[-1])
+				ctriple.append(text)
+
+				flags, text = next(i).split(':', 1)
+				assert flags[0] == 'm'
+				ctriple.append(text)
+
+				flags, text = next(i).split(':', 1)
+				assert flags[0] == 'e'
+				ctriple.append(text)
+				ctriple.append(indent)
+
+				rv.append(ctriple)
+			elif 'b' in flags:
+				if len(text) == 1:
+					rv.insert(0, ("SINGLE_CHAR", text, text, text, ""))
+	except StopIteration:
+		return rv
+
+def get_comment_format():
+	""" Returns a 4-element tuple (first_line, middle_lines, end_line, indent)
+	representing the comment format for the current file.
+	It first looks at the 'commentstring', if that ends with %s, it uses that.
+	Otherwise it parses '&comments' and prefers single character comment
+	markers if there are any.
+	"""
+	commentstring = vim.eval("&commentstring")
+	if commentstring.endswith("%s"):
+		c = commentstring[:-2]
+		return (c.rstrip(), c.rstrip(), c.rstrip(), "")
+	comments = _parse_comments(vim.eval("&comments"))
+	for c in comments:
+		if c[0] == "SINGLE_CHAR":
+			return c[1:]
+	return comments[0][1:]
+
+endglobal
+
+snippet c "test" b
+`!p snip.rv=get_comment_format()[0]`
+endsnippet
+
+
+##############
+# NICE BOXES #
+##############
+
+
+snippet box "Box"
+`!p snip.rv = '+' + '-' * (len(t[1]) + 2) + '+'`
+| $1 |
+`!p snip.rv = '+' + '-' * (len(t[1]) + 2) + '+'`
+$0
+endsnippet
+
+snippet #box "Box"
+`!p snip.rv = '#' + '#' * (len(t[1]) + 2) + '#'`
+# $1 #
+`!p snip.rv = '#' + '#' * (len(t[1]) + 2) + '#'`
+$0
+endsnippet
+
+
+#########
+# DATES #
+#########
+
+
+snippet date "YYYY-MM-DD" w
+`!v strftime("%Y-%m-%d")`
+endsnippet
+
+snippet ddate "Month DD, YYYY" w
+`!v strftime("%b %d, %Y")`
+endsnippet
+
+snippet diso "ISO format datetime" w
+`!v strftime("%Y-%m-%d %H:%M:%S%z")`
+endsnippet
+
+snippet time "hh:mm" w
+`!v strftime("%H:%M")`
+endsnippet
+
+snippet datetime "YYYY-MM-DD hh:mm" w
+`!v strftime("%Y-%m-%d %H:%M")`
+endsnippet
+
+
+##############
+# Signatures #
+##############
+
+
+snippet "[l,L]ucas" "Lucas Gruwez" r
+Lucas Gruwez
+endsnippet
+
+snippet sign "signature"
+Yours sincierely,
+
+Lucas Gruwez
+endsnippet
+
+
+##########################
+# LOREM IPSUM GENERATORS #
+##########################
+
+
+snippet "lorem(([1-4])?[0-9])?" "Lorem Ipsum" r
+`!p snip.rv = " ".join(LOREM.split()[:int(match.group(1))]) if match.group(1) else LOREM`
+endsnippet
+
+
+########
+# Misc #
+########
+
+
+snippet uuid "Random UUID" w
+`!p if not snip.c: import uuid; snip.rv = str(uuid.uuid4())`
+endsnippet
+
+snippet fn "File name"
+`!p snip.rv = snip.fn`
+endsnippet
+
+
+
