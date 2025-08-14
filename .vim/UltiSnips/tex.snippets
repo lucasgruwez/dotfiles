@@ -597,7 +597,6 @@ snippet "\\vb\{([^\s]+?)\}hat" "Unit vector" riA
 `!p snip.rv = '\\vu{'+match.group(1)+'}'`
 endsnippet
 
-
 context "math()"
 snippet "(d?\\?\w+)(,\.|\.,)" "Vector postfix" riA
 `!p
@@ -606,6 +605,17 @@ if g1[0] == 'd' and len(g1) > 1:
 	snip.rv='d\\vb{'+match.group(1)[1:]+'}'
 else:
 	snip.rv='\\vb{'+match.group(1)+'}'
+`
+endsnippet 
+
+context "math()"
+snippet "(d?\\?\w+)(/\.|\./)" "Tensor postfix" riA
+`!p
+g1 = match.group(1)
+if g1[0] == 'd' and len(g1) > 1:
+	snip.rv='d\\tens{'+match.group(1)[1:]+'}'
+else:
+	snip.rv='\\tens{'+match.group(1)+'}'
 `
 endsnippet 
 

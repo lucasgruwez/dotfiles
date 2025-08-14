@@ -2,7 +2,6 @@
 " => General
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-
 " Set 'nocompatible' to ward off unexpected things that your distro might
 " have made, as well as sanely reset options when re-sourcing .vimrc
 set nocompatible
@@ -123,9 +122,9 @@ nnoremap N Nzz
 nnoremap <C-L> :nohl<cr><C-L>
 
 " Use F9 as a quick way to run python files
-" autocmd FileType python map <buffer> <F9> :w<CR>:exec '!python3' shellescape(@%, 1)<CR>
+autocmd FileType python map <buffer> <F9> :w<CR>:exec '!python' shellescape(@%, 1)<CR>
 " autocmd FileType python imap <buffer> <F9> <esc>:w<CR>:exec '!python3' shellescape(@%, 1)<CR>
-autocmd FileType python map <buffer> <F9> :w<CR>:exec '!export DISPLAY=localhost:0.0; clear; python3' shellescape(@%, 1)<CR>
+" autocmd FileType python map <buffer> <F9> :w<CR>:exec '!export DISPLAY=localhost:0.0; clear; python3' shellescape(@%, 1)<CR>
 
 " Use F9 as a quick way to run fortran files using make
 autocmd FileType fortran map <buffer> <F9> :w<CR>:exec '!clear; make' expand('%:r')<CR>
@@ -206,6 +205,9 @@ Plug 'tpope/vim-commentary'
 
 " Goyo, Distraction-free writing in Vim
 Plug 'junegunn/goyo.vim'
+
+" Copilot vim accept next word
+" imap <C-L> <M-Right>
 
 call plug#end()
 
