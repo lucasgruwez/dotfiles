@@ -24,6 +24,11 @@ let mapleader = "`"
 " Autosave when leaving insert mode
 autocmd InsertLeave * write
 
+" Disable backup files
+set nobackup
+set nowritebackup
+set noswapfile
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
@@ -183,6 +188,7 @@ Plug 'lervag/vimtex'
 let g:tex_flavor='latex'
 let g:vimtex_view_method='zathura_simple'
 let g:vimtex_quickfix_mode=0
+let g:vimtex_quickfix_open_on_warning = 0
 let g:vimtex_view_zathura_use_synctex=0
 set conceallevel=2
 let g:tex_conceal='abdmgs'

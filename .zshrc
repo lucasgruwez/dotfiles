@@ -111,3 +111,79 @@ alias dotfiles='/usr/bin/git --git-dir="$HOME/.dotfiles/" --work-tree="$HOME"'
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+export UNI="$HOME/Documents/UNI"
+
+unit() {
+    local target="$1"
+
+    if [[ -z "$target" ]]; then
+        echo "Usage: unit <unit-name>" >&2
+        return 1
+    fi
+
+    # Save current dir so we can return to it if nothing found
+    local curdir="$PWD"
+
+    # Find the directory (case-insensitive, only directories, first match)
+    local match
+    match=$(find "$UNI" -type d -iname "*$target*" -print -quit)
+
+    if [[ -n "$match" ]]; then
+        cd "$match" || {
+            echo "Failed to cd into '$match'" >&2
+            cd "$curdir"
+            return 1
+        }
+    else
+        echo "No unit matching '$target' found in $UNI" >&2
+        cd "$curdir"
+        return 1
+    fi
+}
+
+# Clean LaTeX auxiliary files in the current directory
+latexclean() {
+  emulate -L zsh
+  setopt nullglob          # non-matching globs expand to nothing
+
+  # Common LaTeX aux/extensions (+ a few useful extras)
+  local -a exts=(
+    aux bbl blg idx ind ilg log out toc lof lot fls fdb_latexmk
+    nav snm vrb dvi ps bcf run.xml synctex.gz xdv
+    acn acr alg glg glo gls ist
+  )
+
+  local -a files=()
+  for ext in $exts; do
+    files+=( *.$ext(N) )
+  done
+
+  # Extras that are directories or special files produced by some tools
+  files+=( _minted-*(N/) )                 # minted temp dirs
+  files+=( *-eps-converted-to.pdf(N) )     # epstopdf outputs
+  files+=( texput.log(N) )                 # plain TeX log
+
+  if (( ${#files} == 0 )); then
+    print -r -- "No LaTeX auxiliary files found in $PWD."
+    return 0
+  fi
+
+  print -r -- "Removing ${#files} item(s):"
+  print -l -- $files
+  rm -rf -- $files
+}
+
+zathura() {
+    if [[ $# -eq 0 ]]; then
+        # No arguments, just open the app
+        open -a "/Applications/Zathura.app"
+    else
+        # Convert each argument to an absolute path
+        local abs_paths=()
+        for f in "$@"; do
+            abs_paths+=("$(realpath "$f")")
+        done
+        open -a "/Applications/Zathura.app" --args "${abs_paths[@]}"
+    fi
+}
