@@ -624,7 +624,7 @@ context "math()"
 snippet "(\s)(?<!\\)d(\\*[a-zA-Z\{\}\\]*)\s" "d postfix" rA
 `!p
 if len(match.group(2)) > 0:
-	snip.rv = match.group(1) + '\dd{' + match.group(2) + '} '
+	snip.rv = match.group(1) + '\\dd{' + match.group(2) + '} '
 else:
 	snip.rv=match.group(1) + 'd '`
 endsnippet 
