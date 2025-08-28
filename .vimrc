@@ -77,6 +77,9 @@ set scrolloff=999
 " Show current command in the bottom
 set showcmd
 
+" Autoload file changes. Can be undone using by pressing `u`
+set autoread
+
 " Ensure correct syntax highlighting in fortran
 let fortran_free_source=1
 let fortran_more_precise=1
@@ -185,7 +188,23 @@ endif
 
 call plug#begin('~/.vim/plugged')
 
+" Comment and uncomment using "gcc" command
+Plug 'tpope/vim-commentary'
+
+" Surrounding things like parentheses, brackets, quotes, etc.
+Plug 'tpope/vim-surround'
+
+" Repeat things better than '.'
+Plug 'tpope/vim-repeat'
+
+"fzf - Fuzzy file finder
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " VimTex pluggin for using latex in Vim
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
 Plug 'lervag/vimtex'
 let g:tex_flavor='latex'
 let g:vimtex_view_method='zathura_simple'
@@ -222,14 +241,11 @@ Plug 'dylanaraps/wal'
 "Copilot
 " Plug 'github/copilot'
 
-" Comment and uncomment using "gcc" command
-Plug 'tpope/vim-commentary'
+" Copilot vim accept next word
+" imap <C-L> <M-Right>
 
 " Goyo, Distraction-free writing in Vim
 Plug 'junegunn/goyo.vim'
-
-" Copilot vim accept next word
-" imap <C-L> <M-Right>
 
 call plug#end()
 
