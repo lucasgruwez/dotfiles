@@ -87,6 +87,7 @@ source $ZSH/oh-my-zsh.sh
 # else
 #   export EDITOR='nvim'
 # fi
+export EDITOR='vim'
 
 # Compilation flags
 # export ARCHFLAGS="-arch $(uname -m)"
@@ -114,6 +115,7 @@ export NVM_DIR="$HOME/.nvm"
 
 export UNI="$HOME/Documents/UNI"
 export PATH="/usr/local/bin:$PATH"	
+export UNIPYTHON="$UNI/venv/bin/python"
 
 unit() {
     local target="$1"

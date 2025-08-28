@@ -94,6 +94,9 @@ nmap <leader>w :w!<cr>
 " Fast quitting
 nmap <leader>q :q<cr>
 
+" If in a tex file, clean on quit
+autocmd BufWinLeave *.tex silent! :VimtexClean
+
 " Fast commenting
 nmap <leader>c gcc
 
@@ -127,9 +130,8 @@ nnoremap N Nzz
 nnoremap <C-L> :nohl<cr><C-L>
 
 " Use F9 as a quick way to run python files
-autocmd FileType python map <buffer> <F9> :w<CR>:exec '!python' shellescape(@%, 1)<CR>
-" autocmd FileType python imap <buffer> <F9> <esc>:w<CR>:exec '!python3' shellescape(@%, 1)<CR>
-" autocmd FileType python map <buffer> <F9> :w<CR>:exec '!export DISPLAY=localhost:0.0; clear; python3' shellescape(@%, 1)<CR>
+" autocmd FileType python map <buffer> <F9> :w<CR>:exec '!python' shellescape(@%, 1)<CR>
+autocmd FileType python map <buffer> <F9> :w<CR>:exec '!clear; $UNIPYTHON' shellescape(@%, 1)<CR>
 
 " Use F9 as a quick way to run fortran files using make
 autocmd FileType fortran map <buffer> <F9> :w<CR>:exec '!clear; make' expand('%:r')<CR>
@@ -192,6 +194,20 @@ let g:vimtex_quickfix_open_on_warning = 0
 let g:vimtex_view_zathura_use_synctex=0
 set conceallevel=2
 let g:tex_conceal='abdmgs'
+let g:vimtex_compiler_latexmk = {
+	\ 'aux_dir' : '',
+	\ 'out_dir' : '',
+	\ 'callback' : 0,
+	\ 'continuous' : 1,
+	\ 'executable' : 'latexmk',
+	\ 'hooks' : [],
+	\ 'options' : [
+	\   '-verbose',
+	\   '-file-line-error',
+	\   '-synctex=1',
+	\   '-interaction=nonstopmode',
+	\ ],
+	\}
 
 " Vim Snips for latex snippets
 Plug 'sirver/ultisnips'
