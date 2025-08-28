@@ -117,6 +117,10 @@ export UNI="$HOME/Documents/UNI"
 export PATH="/usr/local/bin:$PATH"	
 export UNIPYTHON="$UNI/venv/bin/python"
 
+#-------------------------------------------------------------------------------
+# cd into the directory associated with a unit in the UNI folder
+#-------------------------------------------------------------------------------
+
 unit() {
     local target="$1"
 
@@ -145,7 +149,10 @@ unit() {
     fi
 }
 
+#-------------------------------------------------------------------------------
 # Clean LaTeX auxiliary files in the current directory
+#-------------------------------------------------------------------------------
+#
 latexclean() {
   emulate -L zsh
   setopt nullglob          # non-matching globs expand to nothing
@@ -176,6 +183,10 @@ latexclean() {
   print -l -- $files
   rm -rf -- $files
 }
+
+#-------------------------------------------------------------------------------
+# Open files using the Zathura App (contains a copy of the binary with an icon)
+#-------------------------------------------------------------------------------
 
 zathura() {
     if [[ $# -eq 0 ]]; then
