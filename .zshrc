@@ -120,30 +120,6 @@ export UNIPYTHON="$UNI/venv/bin/python"
 # zoxide setup
 eval "$(zoxide init zsh)"
 
-# Add common paths to zoxide
-zoxide add "$HOME/Downloads"
-zoxide add "$HOME/Documents"
-zoxide add "$HOME/Workspaces"
-
-# All repos inside Workspaces folder
-if [ -d "$HOME/Workspaces" ]; then
-	for dir in "$HOME/Workspaces"/*/; do
-		[ -d "$dir/.git" ] && zoxide add "$dir"
-	done
-fi
-
-# Add all units inside UNI folder
-if [ -d "$UNI" ]; then
-	for dir in "$UNI"/*/; do
-		# Check if its a year folder (/Y\dS\d/)
-		if [[ "$dir" =~ Y[0-9]+S[0-9]+/ ]]; then
-			for unit in "$dir"*/; do
-				[ -d "$unit" ] && zoxide add "$unit"
-			done
-		fi
-	done
-fi
-
 #-------------------------------------------------------------------------------
 # cd into the directory associated with a unit in the UNI folder
 #-------------------------------------------------------------------------------
@@ -228,3 +204,13 @@ zathura() {
         open -a "/Applications/Zathura.app" --args "${abs_paths[@]}"
     fi
 }
+
+# Custom environment variables for MoTeC data directories
+
+export SIM="$HOME/Documents/MoTeC/Logged Data/SIM"
+export VERSA="$HOME/Documents/MoTeC/Logged Data/VERSA"
+export VENV="$HOME/Sandbox/venv"
+
+export VPTOOLS_INTEGRATION_OUTPUT_DIR="$HOME/Documents/MoTeC/Logged Data/SIM/00-integration-results"
+export VPTOOLS_LOG_BASE_DIR="$HOME/Documents/MoTeC/Logged Data"
+

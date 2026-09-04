@@ -1,2 +1,2 @@
-theme = Github-Dark-Default
-font-family = "Fira Code"
+theme = dark:"Github Dark Default", light: "Github Light Default"
+font-family = "TX-02-Data"

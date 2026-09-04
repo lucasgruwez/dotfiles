@@ -36,3 +36,11 @@ Temporary Items
 
 # End of https://www.toptal.com/developers/gitignore/api/macos
 
+# Local agent guidance
+agents.md
+.agents/
+.pi/
+
+# Local subagent logs
+.subagents/
+

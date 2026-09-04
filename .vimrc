@@ -181,6 +181,10 @@ nmap <leader>f ma[s1z=`a
 imap <C-f> <Esc>ma[s1z=`ai
 
 
+" Motec script (.m1scr) files map to csharp syntax highlighting
+autocmd BufRead,BufNewFile *.m1scr set filetype=csharp
+
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugins, via VimPlug
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
